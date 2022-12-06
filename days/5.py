@@ -2,7 +2,7 @@ import re
 import copy
 
 def read_file():
-    with open('input/5.txt', 'r') as f:
+    with open('../input/5.txt', 'r') as f:
         lines = f.read().split('\n\n')
         return lines[0].split('\n'), lines[1].split('\n')
 
