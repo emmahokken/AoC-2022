@@ -37,11 +37,8 @@ def main():
                  calc_score(down, tree)]
             scores.append(np.prod(s))
 
-
     print(f'Part 1: The amount of visible trees is {visible_trees}')
     print(f'Part 2: The highest scenic score is {max(scores)}')
-
-
 
 if __name__ == '__main__':
     main()
