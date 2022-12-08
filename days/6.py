@@ -1,6 +1,5 @@
-def read_file(day):
-    with open(f'../input/{day}.txt', 'r') as f:
-        return f.read().splitlines()[0]
+from utils.read_file import read_file
+
 
 def find_start(lines, marker):
     for i in range(len(lines) - marker):
@@ -8,7 +7,7 @@ def find_start(lines, marker):
             return i + marker
 
 def main():
-    lines = read_file(day=6)
+    lines = read_file(day=6)[0]
     packet_marker = 4
     message_marker = 14
 

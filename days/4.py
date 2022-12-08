@@ -23,8 +23,8 @@ def main():
         if len(common) > 0:
             contained_part2 += 1        
 
-    print(f'Part 1: The total number of overlapping tasks is {contained_part1}.')
-    print(f'Part 2: The total number of partially overlapping tasks is {contained_part2}.')
+    print(f'Part 1: The total number of overlapping tasks is {contained_part1}')
+    print(f'Part 2: The total number of partially overlapping tasks is {contained_part2}')
 
 if __name__ == '__main__':
     main()

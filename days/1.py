@@ -12,11 +12,10 @@ def main():
             elves.append(0)
             idx += 1
 
-
     elves.sort(reverse=True)
 
     print(f'Part 1: The Elf carrying the post calories is carrying {elves[0]} calories')
-    print(f'Part 2: The top three Elves are carrying {sum(elves[:3])} calories.')
+    print(f'Part 2: The top three Elves are carrying {sum(elves[:3])} calories')
 
 
 if __name__ == '__main__':
