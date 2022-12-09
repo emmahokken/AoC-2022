@@ -3,7 +3,6 @@ import math
 import numpy as np 
 
 def main():
-
     directions = {'L': [-1,0], 'R': [1,0], 'U': [0,1], 'D': [0,-1]}
     places = set()
     other_places = set()
