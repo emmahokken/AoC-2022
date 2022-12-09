@@ -17,17 +17,19 @@ def main():
         for _ in range(steps):
             knots[0] = np.add(knots[0], directions[dir])
                 
+            # for each knot 
             for i in range(1, len(knots)):      
                 prev_k = knots[i-1]
+                # check if tail is too far away from head/knot
                 if math.dist(prev_k, knots[i]) >= 2:
                     knots[i] += np.sign(prev_k - knots[i])  
             
+            # remember places visited
             places.add((knots[1][0], knots[1][1]))
             other_places.add((knots[9][0], knots[9][1]))
-                
-
+            
     print(f'Part 1: The tail stops at {len(places)} places')
     print(f'Part 2: The tail stops at {len(other_places)} places')
-    
+
 if __name__ == '__main__':
     main()
