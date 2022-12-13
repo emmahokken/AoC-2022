@@ -13,47 +13,37 @@ class Pair():
     def __repr__(self):
         return f'This pair consists of left {self.left} and right {self.right}\n'
 
-def find_shortest_end(left, right, i):
-    print('in recurse')
-    print(f'Left: {left}, \nright: {right}, \ni: {i}')
-
+def find_shortest_end(left, right):
     for l, r in zip(left, right):
         if isinstance(l, int) and isinstance(r, int):
             # if value left < value right -> right order
             if l < r:
-                print(f'l ({l}) < r ({r}), return {i + 1}')
-                return i + 1
+                return 1
             # if value left > value right -> wrong order
             elif l > r:
-                print(f'l ({l}) > r ({r}), return -1')
                 return -1
 
         # make sure both sides are list
         if isinstance(l, list) and isinstance(r, int):
-            print(f'right is int, make list')
             r = [r]
         elif isinstance(l, int) and isinstance(r, list):
-            print(f'left is int, make list')
             l = [l]
 
         # if both values are lists
         if isinstance(l, list) and isinstance(r, list):
-            print(f'both are lists, go deeper with {l}, {r}, {i}')
             # go deeper
-            deep_find = find_shortest_end(l, r, i)
+            deep_find = find_shortest_end(l, r)
             # if no solution was found, continue to next list
             if deep_find == 0:
                 continue
             return deep_find
 
     if len(left) < len(right):
-        print(f'left list is smaller than right list, with {len(left)} < {len(right)}, return {i+1}')
-        return i + 1
+        return 1
     elif len(left) > len(right):
-        print(f'left list is bigger than right list, with {len(left)} > {len(right)}, return -1')
         return -1
 
-    print('No condition was met, return 0')
+    # no condition was met
     return 0
 
 def guess_ill_do_fucking_bubble_sort(to_sort):
@@ -102,13 +92,7 @@ def recursive_sort(to_sort):
 
 
 def main():
-    '''
-    29394 too high
-    26650 too high [130, 205]
-    19110 too low
-    '''
-
-    lines = read_test_file_double_whiteline(day=13)
+    lines = read_file_double_whiteline(day=13)
 
     pairs = []
     for line in lines:
@@ -118,16 +102,12 @@ def main():
         pairs.append(Pair(left=left, right=right))
 
     ordered = []
-    for i, pair in enumerate(pairs):
-        print(f'\n\noutside, new loop! Ordered is {ordered}')
-        ordered.append(find_shortest_end(pair.left, pair.right, i))
+    for pair in pairs:
+        ordered.append(find_shortest_end(pair.left, pair.right))
 
-    print('\n')
-    ordered = list(filter(lambda x: x > 0, ordered))
-    # jk = sum(i + 1 for i, x in enumerate(ordered) if x > 0)
-    print(ordered, sum(ordered))
-    print(f'Part 1: The sum of the indices of the signals in the right order is {sum(ordered)}')
-    exit()
+    ordered_sum = sum(i + 1 for i, x in enumerate(ordered) if x > 0)
+    print(f'Part 1: The sum of the indices of the signals in the right order is {ordered_sum}')
+
     to_sort_packets = []
     for line in lines:
         left, right = line.split('\n')
@@ -139,23 +119,13 @@ def main():
     to_sort_packets.append([[2]])
     to_sort_packets.append([[6]])
 
-    sorted_packets = sorted(to_sort_packets, key=recursive_sort)
-    # sorted_packets = sorted(sorted_packets, key=itemgetter(0))
+    sorted_packets = sorted(to_sort_packets, key=cmp_to_key(find_shortest_end), reverse=True)
+    # sorted_packets = sorted(to_sort_packets, key=recursive_sort)
 
-    sorted_packets = guess_ill_do_fucking_bubble_sort(to_sort_packets)
-    print()
-    print()
-    print()
-    print()
+    indices = sorted_packets.index([[2]]) * sorted_packets.index([[6]])
+    print(f'Part 2: The product of the indices of the two distress signals is {indices}')
 
-    indices = []
-    for i, el in enumerate(sorted_packets):
-        print(el)
-        if el == [[2]] or el == [[6]]:
-            indices.append(i+1)
 
-    print(indices, np.prod(indices))
-    # part 2: recursive sort?
 
 
 if __name__ == '__main__':
