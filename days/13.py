@@ -13,7 +13,7 @@ class Pair():
     def __repr__(self):
         return f'This pair consists of left {self.left} and right {self.right}\n'
 
-def find_shortest_end(left, right):
+def compair(left, right):
     for l, r in zip(left, right):
         if isinstance(l, int) and isinstance(r, int):
             # if value left < value right -> right order
@@ -32,7 +32,7 @@ def find_shortest_end(left, right):
         # if both values are lists
         if isinstance(l, list) and isinstance(r, list):
             # go deeper
-            deep_find = find_shortest_end(l, r)
+            deep_find = compair(l, r)
             # if no solution was found, continue to next list
             if deep_find == 0:
                 continue
@@ -100,7 +100,7 @@ def main():
         right = ast.literal_eval(right)
         pairs.append(Pair(left=left, right=right))
 
-    ordered = [find_shortest_end(pair.left, pair.right) for pair in pairs]
+    ordered = [compair(pair.left, pair.right) for pair in pairs]
     ordered_sum = sum(i + 1 for i, x in enumerate(ordered) if x > 0)
     print(f'Part 1: The sum of the indices of the signals in the right order is {ordered_sum}')
 
@@ -112,7 +112,7 @@ def main():
     to_sort_packets.append([[2]])
     to_sort_packets.append([[6]])
 
-    sorted_packets = sorted(to_sort_packets, key=cmp_to_key(find_shortest_end), reverse=True)
+    sorted_packets = sorted(to_sort_packets, key=cmp_to_key(compair), reverse=True)
     indices = sorted_packets.index([[2]]) * sorted_packets.index([[6]])
     print(f'Part 2: The product of the indices of the two distress signals is {indices}')
 
