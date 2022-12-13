@@ -5,7 +5,7 @@ from utils.read_file import read_file, read_test_file
 def calc_score(curr, end):
     return math.dist(curr, end)
 
-def mutate_solution(grid, i, j, part):
+def find_valid_moves(grid, i, j, part):
     options = [(i, j-1), (i, j+1), (i-1, j), (i+1, j)]
 
     if part == 1:
@@ -35,22 +35,16 @@ def hill_climbing(grid, start_state, end_state, part):
         visited.add(state)
         i, j = state
 
-        # end conditions differ between parts
-        if part == 1:
-            if i == end_state[0] and j == end_state[1]:
-                return cost
-        elif part == 2:
-            if grid[i, j] == ord('a'):
-                return cost
+        if state in set(end_state):
+            return cost
 
         # explore next options
-        next_options = mutate_solution(grid, i, j, part=part)
-        for op in next_options:
+        valid_moves = find_valid_moves(grid, i, j, part=part)
+        for op in valid_moves:
             to_visit.append({'state': op, 'cost': cost+1})
 
 def main():
     lines = read_file(day=12)
-
 
     start = ord('S')
     end = ord('E')
@@ -67,13 +61,20 @@ def main():
 
     start_state = (start_state[0][0], start_state[1][0])
     end_state = (end_state[0][0], end_state[1][0])
+    en = set()
+    en.add(end_state)
 
     # make start and end state usable
     grid[start_state] = ord('a')
     grid[end_state] = ord('z')
 
-    print(f'Part 1: The shortest possible path from S to E contains {hill_climbing(grid, start_state, end_state, part=1)} steps')
-    print(f'Part 2: The shortest possible path from any S to E contains {hill_climbing(grid, end_state, (0,0), part=2)} steps')
+
+    print(f'Part 1: The shortest possible path from S to E contains {hill_climbing(grid, start_state, en, part=1)} steps')
+
+    end_states = np.where(grid == ord('a'))
+    end_states = [(x,y) for x,y in zip(end_states[0], end_states[1])]
+
+    print(f'Part 2: The shortest possible path from any S to E contains {hill_climbing(grid, end_state, end_states, part=2)} steps')
 
 if __name__ == '__main__':
     main()
