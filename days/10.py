@@ -1,7 +1,6 @@
 from utils.read_file import read_file
 import numpy as np
 
-
 def main():
     program = read_file(day=10)
     X = 1

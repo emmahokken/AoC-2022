@@ -36,6 +36,7 @@ def find_shortest_end(left, right):
             # if no solution was found, continue to next list
             if deep_find == 0:
                 continue
+            # if a solution was found, return it
             return deep_find
 
     if len(left) < len(right):
@@ -70,7 +71,6 @@ def guess_ill_do_fucking_bubble_sort(to_sort):
     return to_sort
 
 def recursive_sort(to_sort):
-
     print(f'We are gonna sort {to_sort}')
 
     # check if list contains list
@@ -90,7 +90,6 @@ def recursive_sort(to_sort):
     for sub_list in contains_list:
         return recursive_sort(to_sort[sub_list])
 
-
 def main():
     lines = read_file_double_whiteline(day=13)
 
@@ -101,33 +100,26 @@ def main():
         right = ast.literal_eval(right)
         pairs.append(Pair(left=left, right=right))
 
-    ordered = []
-    for pair in pairs:
-        ordered.append(find_shortest_end(pair.left, pair.right))
-
+    ordered = [find_shortest_end(pair.left, pair.right) for pair in pairs]
     ordered_sum = sum(i + 1 for i, x in enumerate(ordered) if x > 0)
     print(f'Part 1: The sum of the indices of the signals in the right order is {ordered_sum}')
 
     to_sort_packets = []
-    for line in lines:
-        left, right = line.split('\n')
-        left = ast.literal_eval(left)
-        right = ast.literal_eval(right)
-        to_sort_packets.append(left)
-        to_sort_packets.append(right)
-
+    for pair in pairs:
+        to_sort_packets.append(pair.left)
+        to_sort_packets.append(pair.right)
+   
     to_sort_packets.append([[2]])
     to_sort_packets.append([[6]])
 
     sorted_packets = sorted(to_sort_packets, key=cmp_to_key(find_shortest_end), reverse=True)
-    # sorted_packets = sorted(to_sort_packets, key=recursive_sort)
-
     indices = sorted_packets.index([[2]]) * sorted_packets.index([[6]])
     print(f'Part 2: The product of the indices of the two distress signals is {indices}')
 
+    # i wish the below thing worked :(
+    # sorted_packets = sorted(to_sort_packets, key=recursive_sort)
 
-
-
+    
 if __name__ == '__main__':
     main()
 

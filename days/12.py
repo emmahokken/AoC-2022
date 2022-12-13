@@ -68,7 +68,6 @@ def main():
     grid[start_state] = ord('a')
     grid[end_state] = ord('z')
 
-
     print(f'Part 1: The shortest possible path from S to E contains {hill_climbing(grid, start_state, en, part=1)} steps')
 
     end_states = np.where(grid == ord('a'))
